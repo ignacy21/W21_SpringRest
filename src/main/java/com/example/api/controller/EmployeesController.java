@@ -3,14 +3,17 @@ package com.example.api.controller;
 import com.example.api.dto.EmployeeDTO;
 import com.example.api.dto.EmployeesDTO;
 import com.example.api.mapper.EmployeeMapper;
+import com.example.infrastructure.database.entity.EmployeeEntity;
 import com.example.infrastructure.database.repository.EmployeeRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.math.BigDecimal;
+import java.net.URI;
 
 @RestController
 @RequestMapping(EmployeesController.EMPLOYEES)
@@ -19,6 +22,7 @@ public class EmployeesController {
 
     public static final String EMPLOYEES = "/employees";
     public static final String EMPLOYEE_ID = "/{employeeId}";
+    public static final String EMPLOYEE_ID_RESULT = "/%s";
 
     private EmployeeRepository employeeRepository;
     private EmployeeMapper employeeMapper;
@@ -45,6 +49,26 @@ public class EmployeesController {
                         "EmployeeEntity not Found, employeeId [%s]".formatted(employeeId)
                 ));
     }
+
+    @PostMapping
+    @Transactional // normally in service that we unfortunately don't have
+    public ResponseEntity<EmployeeDTO> addEmployee(
+            @RequestBody EmployeeDTO employeeDTO
+    ) {
+        EmployeeEntity employeeEntity = EmployeeEntity.builder()
+                .employeeId(employeeDTO.getEmployeeId())
+                .name(employeeDTO.getName())
+                .surname(employeeDTO.getSurname())
+                .salary(employeeDTO.getSalary())
+                .phone(employeeDTO.getPhone())
+                .email(employeeDTO.getEmail())
+                .build();
+        EmployeeEntity created = employeeRepository.save(employeeEntity);
+        return ResponseEntity
+                .created(URI.create(EMPLOYEES + EMPLOYEE_ID_RESULT.formatted(created.getEmployeeId())))
+                .build();
+    }
+
 //    @GetMapping("/{employeeId}")
 //    public ResponseEntity<?> showEmployeeDetails(@PathVariable Integer employeeId) {
 //        return null;
