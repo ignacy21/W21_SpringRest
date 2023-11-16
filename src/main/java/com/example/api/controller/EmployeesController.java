@@ -7,6 +7,7 @@ import com.example.infrastructure.database.entity.EmployeeEntity;
 import com.example.infrastructure.database.repository.EmployeeRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -67,6 +68,25 @@ public class EmployeesController {
         return ResponseEntity
                 .created(URI.create(EMPLOYEES + EMPLOYEE_ID_RESULT.formatted(created.getEmployeeId())))
                 .build();
+    }
+
+    @PutMapping(value = EMPLOYEE_ID)
+    public ResponseEntity<?> updateEmployee(
+            @PathVariable Integer employeeId,
+            @Valid @RequestBody EmployeeDTO employeeDTO
+    ) {
+        EmployeeEntity existingEmployee = employeeRepository.findById(employeeId)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "Employee not found, employeeId [%s]".formatted(employeeId)
+                ));
+        existingEmployee.setName(employeeDTO.getName());
+        existingEmployee.setSurname(employeeDTO.getSurname());
+        existingEmployee.setSalary(employeeDTO.getSalary());
+        existingEmployee.setPhone(employeeDTO.getPhone());
+        existingEmployee.setEmail(employeeDTO.getEmail());
+        employeeRepository.save(existingEmployee);
+
+        return ResponseEntity.ok().build();
     }
 
 //    @GetMapping("/{employeeId}")
