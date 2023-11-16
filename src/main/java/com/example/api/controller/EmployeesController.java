@@ -89,6 +89,20 @@ public class EmployeesController {
         return ResponseEntity.ok().build();
     }
 
+    @DeleteMapping(value = EMPLOYEE_ID)
+    public ResponseEntity<?> deleteEmployee(
+            @PathVariable Integer employeeId
+    ) {
+        var opt = employeeRepository.findById(employeeId);
+        if (opt.isPresent()) {
+            employeeRepository.deleteById(employeeId);
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+
 //    @GetMapping("/{employeeId}")
 //    public ResponseEntity<?> showEmployeeDetails(@PathVariable Integer employeeId) {
 //        return null;
