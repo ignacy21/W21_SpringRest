@@ -6,6 +6,7 @@ import com.example.api.mapper.EmployeeMapper;
 import com.example.infrastructure.database.repository.EmployeeRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,13 +24,20 @@ public class EmployeesController {
     private EmployeeMapper employeeMapper;
 
 
-    @GetMapping
+    @GetMapping(produces = {
+            MediaType.APPLICATION_JSON_VALUE
+//            MediaType.APPLICATION_XML_VALUE
+    })
     public EmployeesDTO employeesList() {
         return EmployeesDTO.of(employeeRepository.findAll().stream()
                 .map(employeeMapper::map)
                 .toList());
     }
-    @GetMapping(value = EMPLOYEE_ID)
+
+    @GetMapping(value = EMPLOYEE_ID, produces = {
+            MediaType.APPLICATION_JSON_VALUE
+//            MediaType.APPLICATION_XML_VALUE
+    })
     public EmployeeDTO employeeDetails(@PathVariable Integer employeeId) {
         return employeeRepository.findById(employeeId)
                 .map(employeeMapper::map)
