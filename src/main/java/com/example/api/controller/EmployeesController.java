@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.net.URI;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(EmployeesController.EMPLOYEES)
@@ -23,6 +24,7 @@ public class EmployeesController {
 
     public static final String EMPLOYEES = "/employees";
     public static final String EMPLOYEE_ID = "/{employeeId}";
+    public static final String EMPLOYEE_UPDATE_SALARY = "/{employeeId}/salary";
     public static final String EMPLOYEE_ID_RESULT = "/%s";
 
     private EmployeeRepository employeeRepository;
@@ -75,10 +77,8 @@ public class EmployeesController {
             @PathVariable Integer employeeId,
             @Valid @RequestBody EmployeeDTO employeeDTO
     ) {
-        EmployeeEntity existingEmployee = employeeRepository.findById(employeeId)
-                .orElseThrow(() -> new EntityNotFoundException(
-                        "Employee not found, employeeId [%s]".formatted(employeeId)
-                ));
+        EmployeeEntity existingEmployee = findEmployeeByElseThrowException(employeeId);
+
         existingEmployee.setName(employeeDTO.getName());
         existingEmployee.setSurname(employeeDTO.getSurname());
         existingEmployee.setSalary(employeeDTO.getSalary());
@@ -93,52 +93,29 @@ public class EmployeesController {
     public ResponseEntity<?> deleteEmployee(
             @PathVariable Integer employeeId
     ) {
-        var opt = employeeRepository.findById(employeeId);
-        if (opt.isPresent()) {
-            employeeRepository.deleteById(employeeId);
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        findEmployeeByElseThrowException(employeeId);
+        employeeRepository.deleteById(employeeId);
+
+        return ResponseEntity.noContent().build();
+    }
+    @PatchMapping(value = EMPLOYEE_UPDATE_SALARY)
+    public ResponseEntity<?> updateEmployeeSalary(
+            @PathVariable Integer employeeId,
+            @RequestParam BigDecimal newSalary
+    ) {
+        EmployeeEntity employeeEntity = findEmployeeByElseThrowException(employeeId);
+        employeeEntity.setSalary(newSalary);
+        employeeRepository.save(employeeEntity);
+
+        return ResponseEntity.ok().build();
     }
 
+    private EmployeeEntity findEmployeeByElseThrowException(Integer employeeId) {
+        return employeeRepository.findById(employeeId)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "Employee not found, employeeId [%s]".formatted(employeeId)
+                ));
+    }
 
-//    @GetMapping("/{employeeId}")
-//    public ResponseEntity<?> showEmployeeDetails(@PathVariable Integer employeeId) {
-//        return null;
-//    }
-//
-//    @PostMapping
-//    public ResponseEntity<?> addEmployee(
-//            @RequestParam(value = "name") String name,
-//            @RequestParam(value = "surname") String surname,
-//            @RequestParam(value = "salary") String salary
-//    ) {
-//        // TODO
-//        return null;
-//    }
-//
-//    @PutMapping("/{employeeId}")
-//    public ResponseEntity<?> showEmployeeDetails(
-//            @PathVariable Integer employeeId,
-//            @RequestParam String name,
-//            @RequestParam String surname,
-//            @RequestParam String salary
-//    ) {
-//        // TODO
-//        return null;
-//    }
-//
-//    @DeleteMapping("/{employeeId}")
-//    public ResponseEntity<?> deleteEmployee(@PathVariable Integer employeeId) {
-//        // TODO
-//        return null;
-//    }
-//
-//    @PatchMapping("/{employeeId}")
-//    public ResponseEntity<?> partiallyUpdateEmployee(@PathVariable Integer employeeId) {
-//        // TODO
-//        return null;
-//    }
 }
 
