@@ -9,13 +9,13 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.net.URI;
-import java.util.Optional;
 
 @RestController
 @RequestMapping(EmployeesController.EMPLOYEES)
@@ -115,6 +115,18 @@ public class EmployeesController {
                 .orElseThrow(() -> new EntityNotFoundException(
                         "Employee not found, employeeId [%s]".formatted(employeeId)
                 ));
+    }
+
+    @GetMapping(value = "test-header")
+    public ResponseEntity<?> testHeader(
+            @RequestHeader(value = HttpHeaders.ACCEPT) MediaType accept,
+            @RequestHeader(value = "httpStatus") int httpStatus
+    ) {
+        return ResponseEntity
+                .status(httpStatus)
+                .body("Accepted: " + accept);
+
+
     }
 
 }
