@@ -1,10 +1,14 @@
-package com.example.api.controller;
+package com.example.controller.api;
 
-import com.example.api.dto.EmployeeDTO;
-import com.example.api.dto.EmployeesDTO;
-import com.example.api.mapper.EmployeeMapper;
+import com.example.controller.dao.PetDAO;
+import com.example.controller.dto.EmployeeDTO;
+import com.example.controller.dto.EmployeesDTO;
+import com.example.controller.dto.EmployeeMapper;
 import com.example.infrastructure.database.entity.EmployeeEntity;
+import com.example.infrastructure.database.entity.PetEntity;
 import com.example.infrastructure.database.repository.EmployeeRepository;
+import com.example.infrastructure.database.repository.PetRepository;
+import com.example.infrastructure.petstore.Pet;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -26,9 +30,12 @@ public class EmployeesController {
     public static final String EMPLOYEE_ID = "/{employeeId}";
     public static final String EMPLOYEE_UPDATE_SALARY = "/{employeeId}/salary";
     public static final String EMPLOYEE_ID_RESULT = "/%s";
+    public static final String EMPLOYEE_UPDATE_PET = "/{employeeId}/pet/{petId}";
 
     private EmployeeRepository employeeRepository;
     private EmployeeMapper employeeMapper;
+    private PetDAO petDao;
+    private PetRepository petRepository;
 
 
     @GetMapping(produces = {
@@ -56,7 +63,7 @@ public class EmployeesController {
     @PostMapping
     @Transactional // normally in service that we unfortunately don't have
     public ResponseEntity<EmployeeDTO> addEmployee(
-            @RequestBody EmployeeDTO employeeDTO
+            @Valid @RequestBody EmployeeDTO employeeDTO
     ) {
         EmployeeEntity employeeEntity = EmployeeEntity.builder()
                 .employeeId(employeeDTO.getEmployeeId())
@@ -77,7 +84,7 @@ public class EmployeesController {
             @PathVariable Integer employeeId,
             @Valid @RequestBody EmployeeDTO employeeDTO
     ) {
-        EmployeeEntity existingEmployee = findEmployeeByElseThrowException(employeeId);
+        EmployeeEntity existingEmployee = findEmployeeOrElseThrowException(employeeId);
 
         existingEmployee.setName(employeeDTO.getName());
         existingEmployee.setSurname(employeeDTO.getSurname());
@@ -93,7 +100,7 @@ public class EmployeesController {
     public ResponseEntity<?> deleteEmployee(
             @PathVariable Integer employeeId
     ) {
-        findEmployeeByElseThrowException(employeeId);
+        findEmployeeOrElseThrowException(employeeId);
         employeeRepository.deleteById(employeeId);
 
         return ResponseEntity.noContent().build();
@@ -103,18 +110,35 @@ public class EmployeesController {
             @PathVariable Integer employeeId,
             @RequestParam BigDecimal newSalary
     ) {
-        EmployeeEntity employeeEntity = findEmployeeByElseThrowException(employeeId);
+        EmployeeEntity employeeEntity = findEmployeeOrElseThrowException(employeeId);
         employeeEntity.setSalary(newSalary);
         employeeRepository.save(employeeEntity);
 
         return ResponseEntity.ok().build();
     }
 
-    private EmployeeEntity findEmployeeByElseThrowException(Integer employeeId) {
-        return employeeRepository.findById(employeeId)
-                .orElseThrow(() -> new EntityNotFoundException(
-                        "Employee not found, employeeId [%s]".formatted(employeeId)
+    @PatchMapping(EMPLOYEE_UPDATE_PET)
+    public ResponseEntity<?> updateEmployeeWithPet(
+            @PathVariable Integer employeeId,
+            @PathVariable Integer petId
+    ) {
+        EmployeeEntity existingEmployee = findEmployeeOrElseThrowException(employeeId);
+
+        Pet petFromStore = petDao.getPet(Long.valueOf(petId))
+                .orElseThrow(() -> new RuntimeException(
+                        "Pet with id [%s] could not be retrieved".formatted(petId)
                 ));
+
+        PetEntity newPet = PetEntity.builder()
+                .petStorePetId(petFromStore.getId())
+                .name(petFromStore.getName())
+                .status(petFromStore.getStatus())
+                .employee(existingEmployee)
+                .build();
+
+        petRepository.save(newPet);
+
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping(value = "test-header")
@@ -125,9 +149,16 @@ public class EmployeesController {
         return ResponseEntity
                 .status(httpStatus)
                 .body("Accepted: " + accept);
-
-
     }
 
+
+
+
+    private EmployeeEntity findEmployeeOrElseThrowException(Integer employeeId) {
+        return employeeRepository.findById(employeeId)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "Employee not found, employeeId [%s]".formatted(employeeId)
+                ));
+    }
 }
 
