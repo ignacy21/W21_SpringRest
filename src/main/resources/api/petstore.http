@@ -1,0 +1,30 @@
+PUT http://localhost:8190/w-21/employees/10
+Content-Type: application/json
+
+{
+  "name": "Jan",
+  "surname": "Janowski",
+  "salary": 6924.00,
+  "phone": "+48 421 421 421",
+  "email": "jan@zajavka.pl"
+}
+
+###
+POST http://localhost:8190/w-21/employees
+Content-Type: application/json
+
+{
+  "name": "Ignacy",
+  "surname": "Ignacowski",
+  "salary": 6924.00,
+  "phone": "+48 420 420 420",
+  "email": "ignacy@zajavka.pl"
+}
+
+###
+GET http://localhost:8190/w-21/employees
+Accept: application/json
+
+
+
+
