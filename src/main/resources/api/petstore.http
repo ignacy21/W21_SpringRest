@@ -1,3 +1,12 @@
+PATCH http://localhost:8190/w-21/employees/11/pet/9
+Accept: application/json
+
+
+###
+GET https://petstore3.swagger.io/api/v3/pet/9
+Accept: application/json
+
+###
 PUT http://localhost:8190/w-21/employees/10
 Content-Type: application/json
 
