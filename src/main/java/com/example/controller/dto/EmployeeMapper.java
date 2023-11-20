@@ -1,6 +1,6 @@
-package com.example.api.mapper;
+package com.example.controller.dto;
 
-import com.example.api.dto.EmployeeDTO;
+import com.example.controller.dto.EmployeeDTO;
 import com.example.infrastructure.database.entity.EmployeeEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;

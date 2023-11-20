@@ -1,6 +1,6 @@
-package com.example.api.controller;
+package com.example.controller.api;
 
-import com.example.api.dto.ExceptionMessage;
+import com.example.controller.dto.ExceptionMessage;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ConstraintViolationException;
 import lombok.NonNull;

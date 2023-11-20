@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.util.Set;
 
 @Data
 @Entity
@@ -35,5 +36,8 @@ public class EmployeeEntity {
 
     @Column(name = "email")
     private String email;
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "employee")
+    private Set<PetEntity> pets;
 
 }
