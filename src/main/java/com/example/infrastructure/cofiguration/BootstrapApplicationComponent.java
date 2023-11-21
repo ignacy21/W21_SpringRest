@@ -1,5 +1,6 @@
 package com.example.infrastructure.cofiguration;
 
+import com.example.infrastructure.database.repository.PetRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -16,10 +17,12 @@ import java.math.BigDecimal;
 public class BootstrapApplicationComponent implements ApplicationListener<ContextRefreshedEvent> {
 
     private EmployeeRepository employeeRepository;
+    private PetRepository petRepository;
 
     @Override
     @Transactional
     public void onApplicationEvent(@NonNull ContextRefreshedEvent event) {
+        petRepository.deleteAll();
         employeeRepository.deleteAll();
 
         employeeRepository.save(EmployeeEntity.builder()
