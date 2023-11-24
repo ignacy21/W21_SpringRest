@@ -38,6 +38,12 @@ dependencies {
 
     // api
     implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0"
+    implementation "org.openapitools:jackson-databind-nullable:${jacksonDatabindNullableVersion}"
+    implementation "javax.annotation:javax.annotation-api:${javaxAnnotationApi}"
+    implementation "io.swagger:swagger-annotations:${swaggerAnnotations}"
+    implementation "com.google.code.findbugs:jsr305:${jsr305Version}"
+
+
 
     // annotations
     compileOnly 'org.projectlombok:lombok'
@@ -61,7 +67,7 @@ openApiGenerate {
     generatorName.set("java")
     library.set("webclient")
     inputSpec.set("$rootDir/src/main/resources/petstore-v3.0.2.json")
-    outputDir.set("$buildDir/generated-sources/opeapi")
+    outputDir.set("$buildDir/generated-sources/openapi")
     apiPackage.set("com.example.infrastructure.petstore.api")
     modelPackage.set("com.example.infrastructure.petstore.model")
     configOptions.set([
