@@ -62,7 +62,8 @@ openApiGenerate {
     library.set("webclient")
     inputSpec.set("$rootDir/src/main/resources/petstore-v3.0.2.json")
     outputDir.set("$buildDir/generated-sources/opeapi")
-    apiPackage.set("com.example.infrastructure.petstore.model")
+    apiPackage.set("com.example.infrastructure.petstore.api")
+    modelPackage.set("com.example.infrastructure.petstore.model")
     configOptions.set([
             serializableModel: "true",
             dateLibrary: "java8",
