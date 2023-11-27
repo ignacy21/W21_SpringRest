@@ -13,9 +13,9 @@ import org.springframework.context.annotation.Configuration;
 public class SpringDocConfiguration {
 
     @Bean
-    public GroupedOpenApi groupedOnepApi() {
+    public GroupedOpenApi groupedOpenApi() {
         return GroupedOpenApi.builder()
-                .group("deafult")
+                .group("default")
                 .pathsToMatch("/**")
                 .packagesToScan(SpringRestExampleApplication.class.getPackageName())
                 .build();

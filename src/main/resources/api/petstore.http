@@ -1,13 +1,13 @@
-PATCH http://localhost:8190/w-21/employees/11/pet/9
+PATCH http://localhost:8190/w-21/employees/10/pet/10
 Accept: application/json
 
 
 ###
-GET https://petstore3.swagger.io/api/v3/pet/9
+GET https://petstore3.swagger.io/api/v3/pet/10
 Accept: application/json
 
 ###
-PUT http://localhost:8190/w-21/employees/10
+PUT http://localhost:8190/w-21/employees/5
 Content-Type: application/json
 
 {
