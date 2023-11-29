@@ -95,7 +95,7 @@ public class EmployeesControllerMvcTest {
     void thatPhoneValidationWorksCorrectly(Boolean correctPhone, String phone) throws Exception {
         final String request = """
                 {
-                    "email": "%s"
+                    "phone": "%s"
                 }
                 """.formatted(phone);
         Mockito.when(employeeRepository.save(ArgumentMatchers.any(EmployeeEntity.class)))
