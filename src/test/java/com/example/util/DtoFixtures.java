@@ -1,4 +1,4 @@
-package com.example.controller.util;
+package com.example.util;
 
 import com.example.controller.dto.EmployeeDTO;
 import com.example.controller.dto.PetDTO;

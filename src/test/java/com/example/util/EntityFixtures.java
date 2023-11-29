@@ -1,4 +1,4 @@
-package com.example.controller.util;
+package com.example.util;
 
 import com.example.infrastructure.database.entity.EmployeeEntity;
 import lombok.experimental.UtilityClass;
