@@ -1,3 +1,15 @@
+POST http://localhost:8190/w-21/employees
+Content-Type: application/json
+
+{
+  "name": "employee1",
+  "surname": "employees' 1 surname",
+  "salary": "+48 504 203 260",
+  "phone": "employee1@gamil.com",
+  "email": "1111.11"
+}
+
+###
 PATCH http://localhost:8190/w-21/employees/55/pet/9
 Accept: application/json
 
