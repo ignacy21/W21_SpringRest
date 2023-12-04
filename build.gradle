@@ -53,6 +53,7 @@ dependencies {
     implementation "org.projectlombok:lombok-mapstruct-binding:${lombomMapstructBindingVersion}"
 
     // test
+    testImplementation "io.rest-assured:rest-assured:${restAssuredVersion}"
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testCompileOnly 'org.projectlombok:lombok'
     testAnnotationProcessor 'org.projectlombok:lombok'
