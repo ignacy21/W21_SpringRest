@@ -5,10 +5,13 @@ import com.example.controller.dto.EmployeesDTO;
 import com.example.integration.configuration.RestAssuredIntegrationTestBase;
 import com.example.integration.support.EmployeesControllerTestSupport;
 import com.example.util.DtoFixtures;
+import io.restassured.response.ExtractableResponse;
+import io.restassured.response.Response;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.Set;
+import java.util.regex.Pattern;
 
 public class EmployeesControllerRestAssuredIT
         extends RestAssuredIntegrationTestBase
@@ -32,6 +35,39 @@ public class EmployeesControllerRestAssuredIT
                 .usingRecursiveFieldByFieldElementComparatorIgnoringFields("employeeId")
                 .contains(employee1.withPets(Set.of()), employee2.withPets(Set.of()));
 
+    }
+
+    @Test
+    void thatEmployeeCanBeCreatedCorrectly() {
+        // given
+        EmployeeDTO employee1 = DtoFixtures.someEmployee1();
+
+        // when
+        ExtractableResponse<Response> response = saveEmployee(employee1);
+
+        // then
+        String responseAsString = response.body().asString();
+        Assertions.assertThat(responseAsString).isEmpty();
+        Assertions.assertThat(response.headers().get("Location").getValue())
+                .matches(Pattern.compile("/employees/\\d"));
+    }
+
+    @Test
+    void thatCreatedEmployeeCanBeRetrievedCorrectly() {
+        // given
+        EmployeeDTO employee1 = DtoFixtures.someEmployee1();
+
+        // when
+        ExtractableResponse<Response> response = saveEmployee(employee1);
+        String employeeDetailsPath = response.headers().get("Location").getValue();
+
+        EmployeeDTO employee = getEmployee(employeeDetailsPath);
+
+        // then
+        Assertions.assertThat(employee)
+                .usingRecursiveComparison()
+                .ignoringFields("employeeId")
+                .isEqualTo(employee1.withPets(Set.of()));
     }
 
 }

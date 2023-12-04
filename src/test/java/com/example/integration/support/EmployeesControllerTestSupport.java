@@ -1,6 +1,5 @@
 package com.example.integration.support;
 
-import ch.qos.logback.core.model.conditional.ElseModel;
 import com.example.controller.api.EmployeesController;
 import com.example.controller.dto.EmployeeDTO;
 import com.example.controller.dto.EmployeesDTO;
@@ -23,6 +22,15 @@ public interface EmployeesControllerTestSupport {
                 .as(EmployeesDTO.class);
     }
 
+    default EmployeeDTO getEmployee(final String path) {
+        return requestSpecification()
+                .get(path)
+                .then()
+                .statusCode(HttpStatus.OK.value())
+                .and()
+                .extract()
+                .as(EmployeeDTO.class);
+    }
     default EmployeeDTO getEmployeeById(final Integer employeeId) {
         return requestSpecification()
                 .get(EmployeesController.EMPLOYEES + EmployeesController.EMPLOYEE_ID, employeeId)
