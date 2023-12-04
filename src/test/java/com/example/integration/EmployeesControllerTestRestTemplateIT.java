@@ -1,6 +1,7 @@
-package com.example.integration.configuration;
+package com.example.integration;
 
 import com.example.controller.dto.EmployeesDTO;
+import com.example.integration.configuration.AbstractIntegrationTest;
 import com.example.util.DtoFixtures;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
