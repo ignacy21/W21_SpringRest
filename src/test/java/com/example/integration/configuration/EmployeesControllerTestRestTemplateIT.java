@@ -3,14 +3,16 @@ package com.example.integration.configuration;
 import com.example.controller.dto.EmployeesDTO;
 import com.example.util.DtoFixtures;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.ResponseEntity;
 
-@AllArgsConstructor
-public class BootstrapApplicationComponent {
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+public class EmployeesControllerTestRestTemplateIT extends AbstractIntegrationTest {
 
     @LocalServerPort
     private int port;
@@ -19,7 +21,7 @@ public class BootstrapApplicationComponent {
 
     @Test
     void applicationWorksCorrectly() {
-        String url = "http://localhost:%s/w-20/employees".formatted(port);
+        String url = "http://localhost:%s/w-21/employees".formatted(port);
 
         this.testRestTemplate.postForEntity(url, DtoFixtures.someEmployee1(), EmployeesDTO.class);
 
