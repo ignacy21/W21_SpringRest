@@ -8,6 +8,8 @@ import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import org.springframework.http.HttpStatus;
 
+import java.math.BigDecimal;
+
 public interface EmployeesControllerTestSupport {
 
     RequestSpecification requestSpecification();
@@ -52,9 +54,17 @@ public interface EmployeesControllerTestSupport {
     }
 
 
-    default void updateEmployee(final Integer employeeId, final Long petId) {
+    default void updateEmployeesPet(final Integer employeeId, final Long petId) {
         String endPoint = EmployeesController.EMPLOYEES + EmployeesController.EMPLOYEE_UPDATE_PET;
         requestSpecification()
+                .patch(endPoint)
+                .then()
+                .statusCode(HttpStatus.OK.value());
+    }
+    default void updateEmployeesSalary(final Integer employeeId, final BigDecimal salary) {
+        String endPoint = EmployeesController.EMPLOYEES + EmployeesController.EMPLOYEE_UPDATE_SALARY.replace("{employeeId}", employeeId.toString());
+        requestSpecification()
+                .param("newSalary", salary)
                 .patch(endPoint)
                 .then()
                 .statusCode(HttpStatus.OK.value());

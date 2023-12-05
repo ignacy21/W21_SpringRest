@@ -10,6 +10,7 @@ import io.restassured.response.Response;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.math.BigDecimal;
 import java.util.Set;
 import java.util.regex.Pattern;
 
@@ -70,4 +71,25 @@ public class EmployeesControllerRestAssuredIT
                 .isEqualTo(employee1.withPets(Set.of()));
     }
 
+    @Test
+    void thatEmployeeIsUpdatedCorrectly() {
+        // given
+        EmployeeDTO employee1 = DtoFixtures.someEmployee1();
+        String newSalary = "123.69";
+
+        // when
+        ExtractableResponse<Response> response = saveEmployee(employee1);
+        String employeeDetailsPath = response.headers().get("Location").getValue();
+        EmployeeDTO retrievedEmployee = getEmployee(employeeDetailsPath);
+        Integer retrievedEmployeeId = retrievedEmployee.getEmployeeId();
+
+        updateEmployeesSalary(retrievedEmployeeId, new BigDecimal(newSalary));
+
+        EmployeeDTO employeeById = getEmployeeById(retrievedEmployeeId);
+
+        // then
+        Assertions.assertThat(employeeById.getSalary())
+                .isEqualTo(newSalary);
+
+    }
 }
