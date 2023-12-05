@@ -1,4 +1,4 @@
-package com.example.integration.support;
+package com.example.integration.support.api;
 
 import com.example.controller.api.EmployeesController;
 import com.example.controller.dto.EmployeeDTO;

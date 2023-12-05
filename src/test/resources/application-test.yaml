@@ -1,4 +1,10 @@
+api:
+  petStore:
+    url: https://localhost:9999
+
+
 spring:
   jpa:
     hibernate:
       ddl-auto: validate
+

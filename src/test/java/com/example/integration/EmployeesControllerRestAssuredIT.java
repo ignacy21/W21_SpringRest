@@ -3,7 +3,7 @@ package com.example.integration;
 import com.example.controller.dto.EmployeeDTO;
 import com.example.controller.dto.EmployeesDTO;
 import com.example.integration.configuration.RestAssuredIntegrationTestBase;
-import com.example.integration.support.EmployeesControllerTestSupport;
+import com.example.integration.support.api.EmployeesControllerTestSupport;
 import com.example.util.DtoFixtures;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;

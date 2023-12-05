@@ -15,7 +15,7 @@ Accept: application/json
 
 
 ###
-GET https://petstore3.swagger.io/api/v3/pet/10
+GET https://petstore3.swagger.io/api/v3/pet/9
 Accept: application/json
 
 ###
