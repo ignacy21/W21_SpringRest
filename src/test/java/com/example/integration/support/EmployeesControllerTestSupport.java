@@ -57,16 +57,15 @@ public interface EmployeesControllerTestSupport {
     default void updateEmployeesPet(final Integer employeeId, final Long petId) {
         String endPoint = EmployeesController.EMPLOYEES + EmployeesController.EMPLOYEE_UPDATE_PET;
         requestSpecification()
-                .patch(endPoint)
+                .patch(endPoint, employeeId, petId)
                 .then()
                 .statusCode(HttpStatus.OK.value());
     }
     default void updateEmployeesSalary(final Integer employeeId, final BigDecimal salary) {
         String endPoint = EmployeesController.EMPLOYEES + EmployeesController.EMPLOYEE_UPDATE_SALARY;
         requestSpecification()
-                .pathParam("employeeId", employeeId)
                 .param("newSalary", salary)
-                .patch(endPoint)
+                .patch(endPoint, employeeId)
                 .then()
                 .statusCode(HttpStatus.OK.value());
     }
