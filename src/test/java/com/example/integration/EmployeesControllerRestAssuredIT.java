@@ -3,7 +3,8 @@ package com.example.integration;
 import com.example.controller.dto.EmployeeDTO;
 import com.example.controller.dto.EmployeesDTO;
 import com.example.integration.configuration.RestAssuredIntegrationTestBase;
-import com.example.integration.support.api.EmployeesControllerTestSupport;
+import com.example.integration.support.EmployeesControllerTestSupport;
+import com.example.integration.support.WireMockTestSupport;
 import com.example.util.DtoFixtures;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -16,7 +17,7 @@ import java.util.regex.Pattern;
 
 public class EmployeesControllerRestAssuredIT
         extends RestAssuredIntegrationTestBase
-        implements EmployeesControllerTestSupport {
+        implements EmployeesControllerTestSupport, WireMockTestSupport {
 
     @Test
     void thatEmployeesListCanBeRetrievedCorrectly() {
@@ -91,5 +92,29 @@ public class EmployeesControllerRestAssuredIT
         Assertions.assertThat(employeeById.getSalary())
                 .isEqualTo(newSalary);
 
+    }
+
+    @Test
+    void thatEmployeesCanBeUpdatedWithPetCorrectly() {
+        // given
+        long petId = 4;
+        EmployeeDTO employee1 = DtoFixtures.someEmployee1();
+
+        ExtractableResponse<Response> response = saveEmployee(employee1);
+        String employeeDetailsPath = response.headers().get("Location").getValue();
+        EmployeeDTO retrievedEmployee = getEmployee(employeeDetailsPath);
+
+        stubForPet(wireMockServer, petId);
+
+        // when
+        updateEmployeesPet(retrievedEmployee.getEmployeeId(), petId);
+
+        // then
+        EmployeeDTO employeeWithPet = getEmployeeById(retrievedEmployee.getEmployeeId());
+        Assertions.assertThat(employeeWithPet)
+                .usingRecursiveComparison()
+                .ignoringFields("employeeId", "pets.petStoreId")
+                .ignoringCollectionOrder()
+                .isEqualTo(employee1.withPets(Set.of(DtoFixtures.somePet())));
     }
 }

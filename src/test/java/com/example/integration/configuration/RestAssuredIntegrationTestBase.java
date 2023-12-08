@@ -1,6 +1,6 @@
 package com.example.integration.configuration;
 
-import com.example.integration.support.api.ControllerTestSupport;
+import com.example.integration.support.ControllerTestSupport;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;

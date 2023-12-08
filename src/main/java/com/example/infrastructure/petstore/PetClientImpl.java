@@ -18,16 +18,12 @@ public class PetClientImpl implements PetDAO {
     public Optional<Pet> getPet(Long petId) {
 
         try {
-            // available is only to put breakpoint and see in debugger
-            final var available
-                    = petApi.findPetsByStatusWithHttpInfo("available")
-                    .block()
-                    .getBody();
             return Optional.ofNullable(petApi.getPetById(petId).block())
                     .map(petMapper::map);
         } catch (Exception e) {
             return Optional.empty();
         }
     }
+
 
 }

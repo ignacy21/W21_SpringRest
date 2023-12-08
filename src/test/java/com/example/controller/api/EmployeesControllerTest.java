@@ -2,10 +2,10 @@ package com.example.controller.api;
 
 import com.example.controller.dto.EmployeeDTO;
 import com.example.controller.dto.EmployeeMapper;
-import com.example.util.DtoFixtures;
-import com.example.util.EntityFixtures;
 import com.example.infrastructure.database.entity.EmployeeEntity;
 import com.example.infrastructure.database.repository.EmployeeRepository;
+import com.example.util.DtoFixtures;
+import com.example.util.EntityFixtures;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -10,8 +10,8 @@ public class PetMapper {
         return Pet.builder()
                 .id(pet.getId())
                 .name(pet.getName())
-                .category(Optional.ofNullable(pet.getStatus())
-                        .map(status -> status.getValue())
+                .category(Optional.ofNullable(pet.getCategory())
+                        .map(category -> category.getName())
                         .orElse(null))
                 .build();
     }

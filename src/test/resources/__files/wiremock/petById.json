@@ -1,10 +1,10 @@
 {
-  "id": "{{parameters.petId}}",
+  "id": 4,
   "category": {
     "id": 4,
-    "name": "Lions"
+    "name": "Cats"
   },
-  "name": "Lion 3",
+  "name": "Lion",
   "photoUrls": [
     "url1",
     "url2"

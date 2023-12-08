@@ -3,7 +3,6 @@ package com.example.integration;
 import com.example.controller.dto.EmployeesDTO;
 import com.example.integration.configuration.AbstractIntegrationTest;
 import com.example.util.DtoFixtures;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;

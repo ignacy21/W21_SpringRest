@@ -53,9 +53,6 @@ dependencies {
     implementation "org.projectlombok:lombok-mapstruct-binding:${lombomMapstructBindingVersion}"
 
     // test
-    testImplementation "io.rest-assured:rest-assured:${restAssuredVersion}"
-    testImplementation "com.github.tomakehurst:wiremock:${wiremockVersion}"
-
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testCompileOnly 'org.projectlombok:lombok'
     testAnnotationProcessor 'org.projectlombok:lombok'
@@ -63,6 +60,11 @@ dependencies {
     testImplementation 'org.testcontainers:postgresql'
     testImplementation 'org.springframework.boot:spring-boot-testcontainers'
 //    testImplementation 'org.springframework.security:spring-security-test'
+
+    testImplementation "io.rest-assured:rest-assured:${restAssuredVersion}"
+    // order of dependencies has an influence on the classpath of the application
+    testImplementation "org.slf4j:slf4j-api:${wiremockSlf4jVersion}"
+    testImplementation "com.github.tomakehurst:wiremock-standalone:${wiremockVersion}"
 }
 
 //                                          OPEN API

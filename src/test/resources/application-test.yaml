@@ -1,6 +1,6 @@
 api:
   petStore:
-    url: https://localhost:9999
+    url: http://localhost:9999
 
 
 spring:

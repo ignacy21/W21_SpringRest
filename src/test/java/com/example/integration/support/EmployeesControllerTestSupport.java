@@ -1,4 +1,4 @@
-package com.example.integration.support.api;
+package com.example.integration.support;
 
 import com.example.controller.api.EmployeesController;
 import com.example.controller.dto.EmployeeDTO;
@@ -53,7 +53,6 @@ public interface EmployeesControllerTestSupport {
                 .extract();
     }
 
-
     default void updateEmployeesPet(final Integer employeeId, final Long petId) {
         String endPoint = EmployeesController.EMPLOYEES + EmployeesController.EMPLOYEE_UPDATE_PET;
         requestSpecification()
@@ -61,6 +60,7 @@ public interface EmployeesControllerTestSupport {
                 .then()
                 .statusCode(HttpStatus.OK.value());
     }
+
     default void updateEmployeesSalary(final Integer employeeId, final BigDecimal salary) {
         String endPoint = EmployeesController.EMPLOYEES + EmployeesController.EMPLOYEE_UPDATE_SALARY;
         requestSpecification()
